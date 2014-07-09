@@ -1,4 +1,5 @@
 class Board
+	attr_reader :currentPlayer
 	@currentPlayer = ""
 	@currentSymbol = ""
 	@board = []
@@ -25,7 +26,25 @@ class Board
 	end
 
 	def checkWin
-		return true
+		if @board[0][0] != " " && @board[0][0] == @board[0][1] && @board[0][1] == @board[0][2]
+			return true
+		elsif @board[1][0] != " " && @board[1][0] == @board[1][1] && @board[1][1] == @board[1][2]
+			return true
+		elsif @board[2][0] != " " && @board[2][0] == @board[2][1] && @board[2][1] == @board[2][2]
+			return true
+		elsif @board[0][0] != " " && @board[0][0] == @board[1][0] && @board[1][0] == @board[2][0]
+			return true
+		elsif @board[0][1] != " " && @board[0][1] == @board[1][1] && @board[1][1] == @board[2][1]
+			return true
+		elsif @board[0][2] != " " && @board[0][2] == @board[1][2] && @board[1][2] == @board[2][2]
+			return true
+		elsif @board[0][0] != " " && @board[0][0] == @board[1][1] && @board[1][1] == @board[2][2]
+			return true
+		elsif @board[2][0] != " " && @board[2][0] == @board[1][1] && @board[1][1] == @board[0][2]
+			return true
+		else
+		end
+		return false
 	end
 
 	def getGuess
@@ -33,9 +52,9 @@ class Board
 		until guessing == false do
 			puts "#{@currentPlayer} please select a guess seperated by a comma (ex. letter,number)"
 			input = gets.chomp
-			guess = input.split(",")
-			col = guess[0].upcase
-			row = guess[1].to_s
+			a , b = input.split('')
+			col = a.upcase
+			row = b.to_s
 			if @rows.include?(col) && @columns.include?(row) 
 				colNum= -99
 				rowNum = row.to_i-1
@@ -65,9 +84,20 @@ puts "Enter Player 1's name"
 player1 = gets.chomp
 puts "Enter Player 2's name"
 player2 = gets.chomp
-board = Board.new(player1.to_s,player2.to_s)
-board.printBoard
-board.getGuess
-board.printBoard
-board.getGuess
-board.printBoard
+currentPlayer = ""
+keepPlaying = 'y'
+kPInputs = ['y','n']
+until keepPlaying == 'n' do
+	board = Board.new(player1.to_s,player2.to_s)
+	until board.checkWin == true do
+		board.printBoard
+		currentPlayer = board.currentPlayer
+		board.getGuess
+	end
+	rightInput = false
+	until rightInput == true
+		puts "#{currentPlayer} Wins! Would you like to play again(y/n)?"
+		keepPlaying = gets.chomp.downcase
+		rightInput = kPInputs.include?(keepPlaying) ? true : false
+	end
+end
