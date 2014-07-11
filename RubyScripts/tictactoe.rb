@@ -47,11 +47,23 @@ class Board
 		return false
 	end
 
+	def checkTie
+		@board.each do |bRow|
+			bRow.each do |bCol|
+				if bCol == " "
+					return false
+				end
+			end
+		end
+		return true;
+	end
+
 	def getGuess
 		guessing = true
-		until guessing == false do
-			puts "#{@currentPlayer} please select a guess seperated by a comma (ex. letter,number)"
-			input = gets.chomp
+		input = ""
+		until guessing == false && input.length == 2 do
+			puts "#{@currentPlayer} please select a guess (ex. a1)"
+			input = gets.chomp.to_s
 			a , b = input.split('')
 			col = a.upcase
 			row = b.to_s
@@ -89,14 +101,20 @@ keepPlaying = 'y'
 kPInputs = ['y','n']
 until keepPlaying == 'n' do
 	board = Board.new(player1.to_s,player2.to_s)
-	until board.checkWin == true do
+	until board.checkWin == true || board.checkTie == true do
 		board.printBoard
 		currentPlayer = board.currentPlayer
 		board.getGuess
 	end
+	board.printBoard
+	if board.checkTie
+		puts "Nobody Wins! Would you like to play again(y/n)?"
+	else
+		puts "#{currentPlayer} Wins! Would you like to play again(y/n)?"
+	end
 	rightInput = false
 	until rightInput == true
-		puts "#{currentPlayer} Wins! Would you like to play again(y/n)?"
+		
 		keepPlaying = gets.chomp.downcase
 		rightInput = kPInputs.include?(keepPlaying) ? true : false
 	end
