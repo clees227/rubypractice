@@ -1,24 +1,22 @@
+#Project Euler Problem 12
 require 'Prime'
 class Integer
-	def factors() 
-		(1..self).select{|n| (self % n).zero?}
-	end
 	def factorsP()
 		tot = 1
-		array = self.prime_division
-		array.each do |i|
-			exp = i[1]
-			tot = tot * (exp + 1)
-		end
+		self.prime_division.each{|i| tot = tot * (i[1]+1)}
 		return tot
 	end
 end
 
+timeStart = Time.now
+numFactors = 500
 i = 1
 num = 1
 loop do 
-	break if num.factorsP >= 500
+	break if num.factorsP >= numFactors
 	i+=1
 	num+=i
 end
-puts num
+timeEnd = Time.now
+puts "Answer: #{num}"
+puts "Time start: #{timeStart}\nTime End: #{timeEnd}\nTotal Time: #{timeEnd-timeStart}"
