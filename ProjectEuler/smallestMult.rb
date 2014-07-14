@@ -1,3 +1,4 @@
+require 'prime'
 #Finds if the number is divisable by 1-20 or not
 def divAll?(num)
 	(1..20).to_a.each do |i| 
@@ -17,3 +18,7 @@ until findDiv == true do
 	end
 	num+= 1
 end
+
+
+
+
