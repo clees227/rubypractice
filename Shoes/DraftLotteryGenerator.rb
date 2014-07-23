@@ -1,29 +1,42 @@
 Shoes.app title: "Draft Lottery App" do
-	#todo make "team class", add lottery balls, add lottery logic
-	def printHash(teamHash)
+	class Team
+		attr_accessor :name
+		attr_accessor :email
+		attr_accessor :balls
+		def initialize(name, email, balls)
+			@name = name
+			@email = email
+			@balls = balls
+		end
+	end
+	#todo make delete team logic, add lottery logic
+	def printTeams(teamArray)
 		printWords = ""
-		teamHash.each do |key, value|
-			printWords << "Team Name: #{key} Email: #{value}\n"
+		teamArray.each do |team|
+			printWords << "Team Name: #{team.name}       Email: #{team.email}       Lottery Balls: #{team.balls}\n"
 		end
 		return printWords
 	end
-	@teams = Hash.new
+	@teams = []
 	@title = title "Welcome to The Inner Circle Draft Lottery", align: "center"
 	stack do
+		para "Current Submission: "
 		@text = para ""
 		flow do
 			para "Team Name"
 			@team = edit_line width: 100
 			para "Team Email"
-			@email = edit_line width:100
+			@teamEmail = edit_line width:100
+			para "Lottery Balls"
+			@lottery = edit_line width:100
 		end
 		@newTeam = button("Save/New Team")
 		@submit = button("Submit")
 		@newTeam.click do
-			@teams[@team.text] = @email.text
-			@text.replace(printHash(@teams))
+			@teams << Team.new(@team.text, @teamEmail.text, @lottery.text)
+			@text.replace(printTeams(@teams))
 			@team.text = ""
-			@email.text = ""
+			@teamEmail.text = ""
 		end
 		@submit.click do 
 			para @team2.text
