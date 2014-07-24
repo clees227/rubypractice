@@ -9,6 +9,14 @@ Shoes.app title: "Draft Lottery App" do
 			@balls = balls
 		end
 	end
+	class Array
+		def removeInstancesOf(element)
+			until not self.include?(element)
+				self.delete(element)
+			end
+			self
+		end
+	end
 	#todo make delete team logic, add lottery logic
 	def printTeams(teamArray)
 		printWords = ""
@@ -17,6 +25,31 @@ Shoes.app title: "Draft Lottery App" do
 		end
 		return printWords
 	end
+
+	def printTeamOrder(teamArray)
+		printWords = ""
+		i = 1
+		teamArray.each do |team|
+			printWords << "#{i}. Team Name: #{team.name}\n"
+			i += 1
+		end
+		return printWords
+	end
+
+	def doLottery(teamList)
+		draftOrder = []
+		lotteryBalls = []
+		teamList.each do |team|
+			team.balls.times{|i| lotteryBalls << team}
+		end
+		while not lotteryBalls.empty?
+			teamPicked = lotteryBalls.shuffle![0] 
+			draftOrder << teamPicked
+			lotteryBalls.removeInstancesOf(teamPicked)
+		end
+		return draftOrder
+	end
+
 	@teams = []
 	@title = title "Welcome to The Inner Circle Draft Lottery", align: "center"
 	stack do
@@ -39,7 +72,8 @@ Shoes.app title: "Draft Lottery App" do
 			@teamEmail.text = ""
 		end
 		@submit.click do 
-			para @team2.text
+			draftOrder = doLottery(@teams)
+			para printTeamOrder(draftOrder)
 		end
 	end
 end
