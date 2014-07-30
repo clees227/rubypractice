@@ -1,4 +1,10 @@
 Shoes.app title: "Draft Lottery App" do
+		def removeInstancesOf(array, element)
+			until not array.include?(element)
+				array.delete(element)
+			end
+			array
+		end
 	class Team
 		attr_accessor :name
 		attr_accessor :email
@@ -6,15 +12,7 @@ Shoes.app title: "Draft Lottery App" do
 		def initialize(name, email, balls)
 			@name = name
 			@email = email
-			@balls = balls
-		end
-	end
-	class Array
-		def removeInstancesOf(element)
-			until not self.include?(element)
-				self.delete(element)
-			end
-			self
+			@balls = balls.to_i
 		end
 	end
 	#todo make delete team logic, add lottery logic
@@ -45,7 +43,8 @@ Shoes.app title: "Draft Lottery App" do
 		while not lotteryBalls.empty?
 			teamPicked = lotteryBalls.shuffle![0] 
 			draftOrder << teamPicked
-			lotteryBalls.removeInstancesOf(teamPicked)
+			lotteryBalls = removeInstancesOf(lotteryBalls,teamPicked)
+			para "Hello World!"
 		end
 		return draftOrder
 	end
@@ -72,8 +71,16 @@ Shoes.app title: "Draft Lottery App" do
 			@teamEmail.text = ""
 		end
 		@submit.click do 
+			para "Hello World"
 			draftOrder = doLottery(@teams)
-			para printTeamOrder(draftOrder)
+			stack do
+				para "Draft Order"
+				order = 1
+				draftOrder.each do |i| 
+					para "#{order}. #{i.name}"
+					order += 1
+				end
+			end
 		end
 	end
 end
