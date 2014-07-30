@@ -69,6 +69,7 @@ Shoes.app title: "Draft Lottery App" do
 			@text.replace(printTeams(@teams))
 			@team.text = ""
 			@teamEmail.text = ""
+			@lottery.text = ""
 		end
 		@submit.click do 
 			para "Hello World"
