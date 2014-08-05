@@ -15,6 +15,7 @@ startTime = Time.now
 num = 0
 1.upto(10000).each do |i|
 	if i.lychrel?
+		puts "#{i} + #{i.to_s.reverse} = #{i + i.to_s.reverse.to_i}"
 		num += 1
 	end
 end
